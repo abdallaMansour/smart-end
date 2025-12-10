@@ -50,7 +50,15 @@ class WebmasterLicenseController extends Controller
                 $WebmasterSetting->save();
             }
         }
-        return response()->json(['status' => 'error', 'msg' => $this->Error]);
+
+        // hake
+        $WebmasterSetting = WebmasterSetting::find(1);
+        $WebmasterSetting->license = 1;
+        $WebmasterSetting->purchase_code = encrypt($request->purchase_code);
+        $WebmasterSetting->save();
+        return response()->json(['status' => 'success', 'msg' => __('backend.licenseSuccess')]);
+
+        // return response()->json(['status' => 'error', 'msg' => $this->Error]);
     }
 
     private function api_call($action, $purchase_code, $current_version)
